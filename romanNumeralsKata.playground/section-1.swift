@@ -1,46 +1,32 @@
 
 import Cocoa
 
-var str = "Hello, playground"
+let mappingList : (Int, String)[] = [
+    (1000,"M"), (900,"CM"),
+    (500,"D"), (400,"CD"),
+    (100,"C"), (90,"XC"),
+    (50,"L"), (40,"XL"),
+    (10,"X"), (9,"IX"),
+    (5,"V"), (4,"IV"),
+    (1,"I")
+]
 
 
-    func toRoman0( acc :String , i :Int ) -> String {
-        if(i==0) {
-            return acc
-        } else if (i >= 1000) {
-            return toRoman0(acc+"M", i-1000)
-        } else if (i >= 900) {
-            return toRoman0(acc+"CM", i-900)
-        }else if (i >= 500) {
-            return toRoman0(acc+"D", i-500)
-        }else if (i >= 400) {
-            return toRoman0(acc+"CD", i-400)
-        }else if (i >= 100) {
-            return toRoman0(acc+"C", i-100)
-        }else if (i >= 90) {
-            return toRoman0(acc+"XC", i-90)
-        }else if (i >= 50) {
-            return toRoman0(acc+"L", i-50)
-        }else if (i >= 40) {
-            return toRoman0(acc+"XL", i-40)
-        }else if (i >= 10) {
-            return toRoman0(acc+"X", i-10)
-        }else if (i >= 9) {
-            return toRoman0(acc+"IX", i-9)
-        }else if (i >= 5) {
-            return toRoman0(acc+"V", i-5)
-        }else if (i >= 4) {
-            return toRoman0(acc+"IV", i-4)
-        }else {
-            return toRoman0(acc+"I", i-1)
+func toRoman( i :Int ) -> String {
+    let z :(Int , String) = (i,"")
+    
+    func combiner( acc:(Int, String) , mapper:(Int, String)) -> (Int, String)  {
+        let n :Int = acc.0 - mapper.0*(acc.0/mapper.0) ;
+        var figures = ""
+        for x in 0..(acc.0/mapper.0) {
+            figures += mapper.1
         }
-    }
-
-func toRoman(i:Int) -> String {
-    return toRoman0("", i)
+        let s : String =  acc.1 + figures ;
+        return ( n , s ) ;
+    } ;
+    
+    return mappingList.reduce( z , combiner).1 ;
 }
-
-println ("Hello, playground")
 
 toRoman(1) == "I"
 toRoman(2) == "II"
